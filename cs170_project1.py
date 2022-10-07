@@ -8,6 +8,22 @@ class PrioritizedItem:
     state: str = field(compare=False)
 
 
+def main():
+    puzzle_size = 0  # Length of each side of the puzzle
+    found_states = {}  # Dictionary of seen states; used to avoid loops
+    initial_state = ""  # Initial state; stored as a string of integers
+    text = input("Please provide the initial state as a non-separated list of integers."
+                 "Enter 0 for a blank. Press enter with each new row.\n")
+    puzzle_size = len(text)
+    for i in range(0, puzzle_size - 1):
+        initial_state += input()
+    print(initial_state)
+    print(puzzle_size)
+
+
+if __name__ == "__main__":
+    main()
+
 item1 = PrioritizedItem(10, "1 2 4 5")
 item2 = PrioritizedItem(15, " test")
 item3 = PrioritizedItem(5, "b 1 2 3 4")
