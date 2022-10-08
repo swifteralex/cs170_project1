@@ -51,7 +51,7 @@ def __up_op(node):
     new_node.depth += 1
     new_node.state[blank_i - 1][blank_j] = 0
     new_node.state[blank_i][blank_j] = node.state[blank_i - 1][blank_j]
-    new_node.cost = new_node.depth + __heuristic_score(new_node)
+    new_node.cost = new_node.depth + __heuristic_score(new_node.state)
     return new_node
 
 
@@ -63,7 +63,7 @@ def __down_op(node):
     new_node.depth += 1
     new_node.state[blank_i + 1][blank_j] = 0
     new_node.state[blank_i][blank_j] = node.state[blank_i + 1][blank_j]
-    new_node.cost = new_node.depth + __heuristic_score(new_node)
+    new_node.cost = new_node.depth + __heuristic_score(new_node.state)
     return new_node
 
 
@@ -75,19 +75,19 @@ def __left_op(node):
     new_node.depth += 1
     new_node.state[blank_i][blank_j - 1] = 0
     new_node.state[blank_i][blank_j] = node.state[blank_i][blank_j - 1]
-    new_node.cost = new_node.depth + __heuristic_score(new_node)
+    new_node.cost = new_node.depth + __heuristic_score(new_node.state)
     return new_node
 
 
 def __right_op(node):
     blank_i, blank_j = __find_blank(node)
-    if blank_j >= len(node.state):
+    if blank_j + 1 >= len(node.state):
         return None
     new_node = copy.deepcopy(node)
     new_node.depth += 1
     new_node.state[blank_i][blank_j + 1] = 0
     new_node.state[blank_i][blank_j] = node.state[blank_i][blank_j + 1]
-    new_node.cost = new_node.depth + __heuristic_score(new_node)
+    new_node.cost = new_node.depth + __heuristic_score(new_node.state)
     return new_node
 # ################################### #
 
