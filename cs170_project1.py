@@ -3,13 +3,15 @@ from dataclasses import dataclass, field
 import problem
 
 
+# Node class that is used in the priority queue
 @dataclass(order=True)
 class Node:
-    cost: int
+    cost: int  # g(n) + h(n)
     depth: int = field(compare=False)
     state: field(compare=False)
 
 
+# Expand function implementation; takes in a node and creates new nodes by using all legal operators
 def expand(node, operators):
     new_node_list = []
     for operator in operators:
@@ -19,12 +21,14 @@ def expand(node, operators):
     return new_node_list
 
 
+# Queueing function implementation; pushes all new nodes to the min heap
 def add_to_priority_queue(nodes, new_nodes):
     for node in new_nodes:
         heapq.heappush(nodes, node)
     return nodes
 
 
+# General search function; takes in a queueing function as an argument and uses imported problem.py file
 def general_search(queueing_function):
     nodes = [Node(0, 0, problem.initial_state)]
 
@@ -59,7 +63,10 @@ def main():
     elif text == '3':
         problem.heuristic = problem.Heuristic.MANHATTAN_DISTANCE
 
+    # Run general search
     goal_node, expansions = general_search(add_to_priority_queue)
+
+    # Print search result
     print("Solution found! Depth was " + str(goal_node.depth) + " and " + str(expansions) + " nodes were expanded.")
 
 
