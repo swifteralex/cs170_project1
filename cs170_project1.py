@@ -1,5 +1,6 @@
 import heapq
 from dataclasses import dataclass, field
+import copy
 
 
 @dataclass(order=True)
@@ -10,9 +11,38 @@ class PrioritizedItem:
 
 
 def expand(node):
-    list = []
-
-    return list
+    new_node_list = []
+    blank_i = node.blank_pos[0]
+    blank_j = node.blank_pos[1]
+    if node.blank_pos[0] > 0:  # Check if moving blank up is valid
+        new_node = copy.deepcopy(node)
+        new_node.cost += 1
+        new_node.state[blank_i - 1][blank_j] = 0
+        new_node.state[blank_i][blank_j] = node.state[blank_i - 1][blank_j]
+        new_node.blank_pos[0] -= 1
+        new_node_list.append(new_node)
+    if node.blank_pos[0] + 1 < len(node.state):  # Check if moving blank down is valid
+        new_node = copy.deepcopy(node)
+        new_node.cost += 1
+        new_node.state[blank_i + 1][blank_j] = 0
+        new_node.state[blank_i][blank_j] = node.state[blank_i + 1][blank_j]
+        new_node.blank_pos[0] += 1
+        new_node_list.append(new_node)
+    if node.blank_pos[1] > 0:  # Check if moving blank left is valid
+        new_node = copy.deepcopy(node)
+        new_node.cost += 1
+        new_node.state[blank_i][blank_j - 1] = 0
+        new_node.state[blank_i][blank_j] = node.state[blank_i][blank_j - 1]
+        new_node.blank_pos[1] -= 1
+        new_node_list.append(new_node)
+    if node.blank_pos[1] + 1 < len(node.state):  # Check if moving blank right is valid
+        new_node = copy.deepcopy(node)
+        new_node.cost += 1
+        new_node.state[blank_i][blank_j + 1] = 0
+        new_node.state[blank_i][blank_j] = node.state[blank_i][blank_j + 1]
+        new_node.blank_pos[1] += 1
+        new_node_list.append(new_node)
+    return new_node_list
 
 
 def main():
