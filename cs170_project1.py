@@ -33,18 +33,22 @@ def general_search(queueing_function):
     nodes = [Node(0, 0, problem.initial_state)]
 
     expansions = 0
+    longest_queue = 0
     while True:
         if len(nodes) == 0:
-            return None, expansions
+            return None, expansions, longest_queue
         node = heapq.heappop(nodes)
 
-        # print("Next best node has depth " + str(node.depth) + " and heuristic score " + str(node.cost - node.depth) + " with state:")
-        # for row in node.state:
-        #     print(row)
+        print("Next best node has depth " + str(node.depth) + " and heuristic score " + str(node.cost - node.depth) + " with state:")
+        for row in node.state:
+            print(row)
 
         if problem.goal_test(node.state):
-            return node, expansions
+            return node, expansions, longest_queue
         nodes = queueing_function(nodes, expand(node, problem.operators))
+
+        if len(nodes) > longest_queue:
+            longest_queue = len(nodes)
         expansions += 1
 
 
@@ -64,10 +68,10 @@ def main():
         problem.heuristic = problem.Heuristic.MANHATTAN_DISTANCE
 
     # Run general search
-    goal_node, expansions = general_search(add_to_priority_queue)
+    goal_node, expansions, longest_queue = general_search(add_to_priority_queue)
 
     # Print search result
-    print("Solution found! Depth was " + str(goal_node.depth) + " and " + str(expansions) + " nodes were expanded.")
+    print("Solution found! Depth was " + str(goal_node.depth) + " and " + str(expansions) + " nodes were expanded. Max queue size was " + str(longest_queue) + ".")
 
 
 if __name__ == "__main__":
